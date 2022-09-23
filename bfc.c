@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 
 struct node
 {
@@ -7,7 +8,7 @@ struct node
     int data;
     struct node *next;
 } *head, *presentPointer;
-int pointerat = 0, i=0;
+int pointerat = 0;
 int br = 0;
 
 void printall();
@@ -27,8 +28,19 @@ int main(int argc, char const *argv[])
 	head->next = NULL;
 	presentPointer = head;
 
+	int setTimer = atoi(argv[2]);
+
+	if( argc > 3 ) {
+	     printf("Too many arguments supplied.\nbfc <filename> <millisecond>");
+	     return 0;
+	}
+	else if(argc < 3){
+	     printf("Two argument expected.\nbfc <filename> <millisecond>");
+	     return 0;
+	}
+
 	FILE *fp;
-	fp = fopen("file4.txt","r");
+	fp = fopen(argv[1],"r");
 	char ch;
 
 	if (!fp)
@@ -40,6 +52,7 @@ int main(int argc, char const *argv[])
 	while (!feof(fp)) {
 		
 	    ch = fgetc(fp);
+	    // printf("{%c}", ch);
 	    switch(ch) {
 	    	case '+':
 	    		incvalue();
@@ -87,7 +100,7 @@ int main(int argc, char const *argv[])
 	    			
 	    			if (ch == '[')
 	    			{
-	    				br= br-1;
+	    				br--;
 	    				// printf("l%dl\n", br);
 	    				// return 0;
 	    			} else if (ch == ']')
@@ -98,28 +111,56 @@ int main(int argc, char const *argv[])
 	    		fseek(fp, -1, SEEK_CUR);
 	    		break;
 	    	default:
-	    		printf("\n>%c<\n", ch);
+	    		// printf("\n>%c<\n", ch);
+	    		continue;
 	    }
 
 
 	    // printf("%c", ch);
+		// printf("\r");
+		// printf("\b\b");
+		// system("cls");
+		// printf("\n");
+		// placePointer();
+		if (setTimer)
+		{
+			printf("\r");
+			printall();
+			Sleep(setTimer);			
+		}
+
 	}
 
-	printf("\n");
+	/*printf("\n");
 	printf("\n");
 	printall();
 	printf("\n");
-	placePointer();
+	placePointer();*/
+
+	if (!setTimer)
+	{
+		printall();
+	}
+
 	return 0;
 }
 
 
 void printall(){ // memory cell
 	struct node *tmpptr = head;
+	int i=0;
     while (tmpptr != NULL)
     {    
+	// printf("\r");
         // printf("%d %d %d\n", tmpptr->prev, tmpptr, tmpptr->next);
-        printf("%d\t", tmpptr->data);
+        
+        if (pointerat == i)
+        {
+        	printf("[%d]\t", tmpptr->data);
+        } else {
+        	printf("%d\t", tmpptr->data);
+        }
+        i++;
         tmpptr = tmpptr->next;
     }
 }
@@ -182,6 +223,6 @@ void inputvalue(){
 void printvalue(){
 	if (presentPointer)
 	{
-		printf("%c", presentPointer->data);
+		printf("%c\n", presentPointer->data);
 	}
 }
