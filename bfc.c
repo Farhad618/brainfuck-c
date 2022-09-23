@@ -49,10 +49,9 @@ int main(int argc, char const *argv[])
 		return 0;
 	}
 
-	while (!feof(fp)) {
-		
+	while (!feof(fp)) {		
 	    ch = fgetc(fp);
-	    // printf("{%c}", ch);
+
 	    switch(ch) {
 	    	case '+':
 	    		incvalue();
@@ -86,7 +85,6 @@ int main(int argc, char const *argv[])
 	    					br--;
 	    				}
 	    			}
-	    			// printf("t%dt\n", ftell(fp));
 	    		}
 	    		break;
 	    	case ']':
@@ -94,15 +92,10 @@ int main(int argc, char const *argv[])
 	    		while(br){
 					fseek(fp, -2, SEEK_CUR);
 	    			ch = fgetc(fp);
-	    			/*printf("{");
-	    			printf(">%c %i<", ch, br);
-	    			printf("}\n");*/
 	    			
 	    			if (ch == '[')
 	    			{
 	    				br--;
-	    				// printf("l%dl\n", br);
-	    				// return 0;
 	    			} else if (ch == ']')
 	    			{
 	    				br++;
@@ -111,17 +104,9 @@ int main(int argc, char const *argv[])
 	    		fseek(fp, -1, SEEK_CUR);
 	    		break;
 	    	default:
-	    		// printf("\n>%c<\n", ch);
 	    		continue;
 	    }
 
-
-	    // printf("%c", ch);
-		// printf("\r");
-		// printf("\b\b");
-		// system("cls");
-		// printf("\n");
-		// placePointer();
 		if (setTimer)
 		{
 			printf("\r");
@@ -130,12 +115,6 @@ int main(int argc, char const *argv[])
 		}
 
 	}
-
-	/*printf("\n");
-	printf("\n");
-	printall();
-	printf("\n");
-	placePointer();*/
 
 	if (!setTimer)
 	{
@@ -150,10 +129,7 @@ void printall(){ // memory cell
 	struct node *tmpptr = head;
 	int i=0;
     while (tmpptr != NULL)
-    {    
-	// printf("\r");
-        // printf("%d %d %d\n", tmpptr->prev, tmpptr, tmpptr->next);
-        
+    {
         if (pointerat == i)
         {
         	printf("[%d]\t", tmpptr->data);
@@ -165,7 +141,7 @@ void printall(){ // memory cell
     }
 }
 
-void placePointer(){
+void placePointer(){ // currently not useful
 
 	for (int i = 0; i < pointerat; ++i)
 	{
@@ -186,7 +162,6 @@ void incpointer(){
 		new_node->data = 0;
 		new_node->next = NULL;
 		presentPointer = new_node;
-		// free(new_node);
 	}
 }
 
