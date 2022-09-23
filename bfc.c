@@ -7,8 +7,8 @@ struct node
     int data;
     struct node *next;
 } *head, *presentPointer;
-int pointerat = 0;
-
+int pointerat = 0, i=0;
+int br = 0;
 
 void printall();
 void placePointer();
@@ -27,16 +27,83 @@ int main(int argc, char const *argv[])
 	head->next = NULL;
 	presentPointer = head;
 
-	// incpointer();
-	// incpointer();
-	// decvalue();
-	// decpointer();
-	// incvalue();
-	// decpointer();
-	// inputvalue();
-	inputvalue();
-	printvalue();
+	FILE *fp;
+	fp = fopen("file4.txt","r");
+	char ch;
 
+	if (!fp)
+	{
+		printf("Cannot open this file.");
+		return 0;
+	}
+
+	while (!feof(fp)) {
+		
+	    ch = fgetc(fp);
+	    switch(ch) {
+	    	case '+':
+	    		incvalue();
+	    		break;
+	    	case '-':
+	    		decvalue();
+	    		break;
+	    	case '>':
+	    		incpointer();
+	    		break;
+	    	case '<':
+	    		decpointer();
+	    		break;
+	    	case '.':
+	    		printvalue();
+	    		break;
+	    	case ',':
+	    		inputvalue();
+	    		break;
+	    	case '[':
+	    		br = 1;
+	    		if (presentPointer->data == 0)
+	    		{
+	    			while(br){
+	    				ch = fgetc(fp);
+	    				if (ch == '[')
+	    				{
+	    					br++;
+	    				} else if (ch == ']')
+	    				{
+	    					br--;
+	    				}
+	    			}
+	    			// printf("t%dt\n", ftell(fp));
+	    		}
+	    		break;
+	    	case ']':
+	    		br = 1;
+	    		while(br){
+					fseek(fp, -2, SEEK_CUR);
+	    			ch = fgetc(fp);
+	    			/*printf("{");
+	    			printf(">%c %i<", ch, br);
+	    			printf("}\n");*/
+	    			
+	    			if (ch == '[')
+	    			{
+	    				br= br-1;
+	    				// printf("l%dl\n", br);
+	    				// return 0;
+	    			} else if (ch == ']')
+	    			{
+	    				br++;
+	    			}
+	    		}
+	    		fseek(fp, -1, SEEK_CUR);
+	    		break;
+	    	default:
+	    		printf("\n>%c<\n", ch);
+	    }
+
+
+	    // printf("%c", ch);
+	}
 
 	printf("\n");
 	printf("\n");
